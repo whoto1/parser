@@ -1,0 +1,38 @@
+from selenium import webdriver
+from bs4 import BeautifulSoup
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+import csv
+
+driver = webdriver.Chrome()
+
+# collecting data
+def print_in_csv(data):
+    with open('film.csv', 'w', newline='') as file:
+        writer = csv.writer(file)
+        writer.writerow(["name", "year", "genre", "country", "views"])
+        for i in data:
+            writer.writerow(i)
+
+info = []
+for pageNumber in range(0, 500, 30):
+    driver.get(f"https://www.film.ru/a-z/serials={pageNumber}")
+    html = driver.page_source
+    soup = BeautifulSoup(html, 'lxml')
+    table = soup.find_all("a", class_="film_list_link")
+
+    for i in table:
+        str = i.text
+        string = str.split("\n")
+        name = string[1]
+        year = string[3]
+        temp = string[5].split(",")
+        genre = temp[0]
+        country = temp[1].replace(" ", "")
+        views = string[9]
+        views = views.replace(" ", "")
+        info.append((name, year, genre, country, views))
+print_in_csv(info)
+        
+
+
