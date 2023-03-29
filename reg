@@ -1,0 +1,24 @@
+from selenium import webdriver
+from bs4 import BeautifulSoup
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+import csv
+
+user_name = "WhoPigeon"
+user_passwd = "CJ7NLkahCwuBTwz"
+
+driver = webdriver.Chrome()
+
+# Registration
+web = "https://auth.fandom.com/signin?flow=b28f8fab-02f4-4af9-9666-81307cab0745"
+driver.get(web)
+name_enter = driver.find_element(By.ID, "identifier")
+name_enter.clear()
+name_enter.send_keys(user_name)
+
+
+email_passwd = driver.find_element(By.ID, "password")
+email_passwd.clear()
+email_passwd.send_keys(user_passwd)
+
+driver.find_element(By.CLASS_NAME, "Submit_buttonWrapper__33HZ0").click()
